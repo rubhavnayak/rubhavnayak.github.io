@@ -227,12 +227,33 @@
   @keyframes flashbar{0%{background:var(--green);color:#000;}100%{background:transparent;color:var(--cyan);}}
   section.flash .sechead{animation:flashbar .9s ease-out; color:#000; background:var(--amber);}
 
+  /* ============ MOBILE NAV OVERLAY ============ */
+  button.prompt{background:none;border:none;cursor:pointer;color:var(--amber);
+    font-family:var(--mono);font-size:inherit;padding:0;line-height:1;}
+  .mobile-nav{display:none;position:fixed;inset:0;z-index:55;}
+  .mobile-nav.open{display:block;}
+  .mobile-nav-backdrop{position:absolute;inset:0;background:rgba(0,0,0,.7);}
+  .mobile-nav-panel{
+    position:absolute;top:calc(var(--topbar) + var(--cmdbar));left:0;width:220px;
+    background:#000;border-right:1px solid var(--amber);border-bottom:1px solid var(--amber);
+    padding:14px 0 14px 12px;
+    max-height:calc(100vh - var(--topbar) - var(--cmdbar) - var(--fnbar));overflow-y:auto;
+  }
+  .mobile-nav-head{color:var(--dim);font-size:11px;letter-spacing:2px;margin-bottom:8px;}
+  .mobile-nav-close{color:var(--amber);font-size:10px;margin-left:8px;}
+  .mobile-nav-panel a{display:flex;gap:10px;align-items:baseline;color:var(--white);
+    padding:5px 8px;border-left:2px solid transparent;border-bottom:none;}
+  .mobile-nav-panel a:hover{background:var(--select);}
+  .mobile-nav-panel a .k{color:var(--yellow);font-weight:700;width:14px;}
+  .mobile-nav-panel a .m{color:var(--amber);font-weight:700;width:34px;}
+  .mobile-nav-panel a .label{color:var(--dim);}
+
   /* ============ RESPONSIVE ============ */
   @media(max-width:760px){
     .index{display:none;}
     main{padding:16px 14px 80px;}
     .topbar .meta{display:none;}
-    .clocks .lbl {display:none;} /* save space on mobile */
+    button.prompt{padding:2px 4px;}
   }
 
   /* ============ REDUCED MOTION ============ */
@@ -374,18 +395,15 @@
   <span class="tkr">RUBHAV NAYAK&nbsp;</span>
   <span class="spacer"></span>
   
-  <!-- DUAL CLOCKS -->
+  <!-- CLOCK -->
   <span class="clocks" aria-label="Current time">
-    <span id="clock-local" title="Your Local Time">--:--:--</span><span class="lbl">LOCAL
-    </span>
-    <span class="sep">|</span>
-    <span id="clock-cest" title="Rubhav's Time (CEST/CET)">--:--:--</span><span class="lbl">NL</span>
+    <span class="lbl">RUBHAV'S TIME</span><span id="clock-cest" title="Rubhav's Time (CEST/CET)">--:--:--</span>
   </span>
 </header>
 
 <!-- COMMAND LINE -->
 <div class="cmdbar">
-  <span class="prompt">&gt;</span>
+  <button class="prompt" id="menu-toggle" aria-label="Open navigation menu" aria-expanded="false">&gt;</button>
   <input id="cmd" autocomplete="off" spellcheck="false"
          aria-label="Command line. Type a code such as HOME, RESUME, OBJ, EDU, PRJ, CONT and press Enter"
          placeholder="Press F1 for help">
@@ -411,6 +429,18 @@
     
     <a href="#contact" data-mn="CON"><span class="k">4</span><span class="m">CON</span><span class="label">Contact</span></a>
   </nav>
+
+  <!-- MOBILE FLOATING NAV -->
+  <div class="mobile-nav" id="mobile-nav" role="dialog" aria-label="Navigation menu">
+    <div class="mobile-nav-backdrop" id="mobile-nav-backdrop"></div>
+    <div class="mobile-nav-panel">
+      <div class="mobile-nav-head">MENU <span class="mobile-nav-close">[ESC]</span></div>
+      <a href="#home"    data-id="home"><span class="k">1</span><span class="m">HOME</span><span class="label">Home</span></a>
+      <a href="#resume"  data-id="resume"><span class="k">2</span><span class="m">RES</span><span class="label">Resume</span></a>
+      <a href="#pic"     data-id="pic"><span class="k">3</span><span class="m">PIC</span><span class="label">Gallery</span></a>
+      <a href="#contact" data-id="contact"><span class="k">4</span><span class="m">CON</span><span class="label">Contact</span></a>
+    </div>
+  </div>
 
   <main>
 
@@ -446,7 +476,7 @@
         <!-- About -->
         <div class="subhead">[ ABOUT ]</div>
         <p class="lede">
-          Hello and welcome to my website! I'm <span class="num">Rubhav Nayak</span>. I am currently a full-time Master's student studying <span class="hl">Electrical Engineering</span> at <span class="loc">TU Delft</span>. Prior to that, I completed my Bachelor's at the <span class="loc">University of Illinois at Urbana-Champaign</span>, where I graduated with honors in <span class="hl">Electrical Engineering</span>.
+          Hello and welcome to my website! I'm <span class="num">Rubhav Nayak</span>. I am currently a full-time Master's student studying <span class="hl">Electrical Engineering</span> at <span class="loc">TU Delft</span>. Prior to that, I completed my Bachelor's in <span class="hl">Electrical Engineering</span> from the <span class="loc">University of Illinois at Urbana-Champaign</span>, where I graduated with honors.
         </p>
         <p class="lede">
           Outside of school, you can find me trying out film photography (see <a href="#pic" onclick="goTo('pic'); return false;">Gallery</a> for some of my favourites), playing video games, and experimenting in the kitchen. I also enjoy traveling, having visited 15 countries (and counting!) across 5 continents. Being a plane nerd, I also document my flights on <a href="https://my.flightradar24.com/rngeekerd" target="_blank" rel="noopener">myFlightRadar24</a>, and you might run into me planespotting at Amsterdam Airport Schiphol :)
@@ -835,6 +865,24 @@
     else if(e.key === "Escape"){ cmd.value=""; cmd.blur(); }
   });
 
+  // ----- mobile nav overlay -----
+  var mobileNav = document.getElementById('mobile-nav');
+  var menuToggle = document.getElementById('menu-toggle');
+  function openMobileNav(){ mobileNav.classList.add('open'); menuToggle.setAttribute('aria-expanded','true'); }
+  function closeMobileNav(){ mobileNav.classList.remove('open'); menuToggle.setAttribute('aria-expanded','false'); }
+  menuToggle.addEventListener('click', function(e){
+    e.stopPropagation();
+    mobileNav.classList.contains('open') ? closeMobileNav() : openMobileNav();
+  });
+  document.getElementById('mobile-nav-backdrop').addEventListener('click', closeMobileNav);
+  document.querySelectorAll('.mobile-nav-panel a').forEach(function(a){
+    a.addEventListener('click', function(e){
+      e.preventDefault();
+      closeMobileNav();
+      goTo(this.dataset.id);
+    });
+  });
+
   // ----- function key bar + index clicks -----
   document.querySelectorAll(".fk").forEach(function(b){
     b.addEventListener("click", function(){
@@ -961,6 +1009,10 @@
     
     // command line focus shortcut works everywhere
     if(!typing){
+      if(mobileNav.classList.contains("open")){
+        if(e.key === "Escape"){ closeMobileNav(); }
+        return;
+      }
       if(help.classList.contains("open")){
         if(e.key === "Escape" || e.key === "?"){ toggleHelp(false); }
         return;
@@ -1005,14 +1057,9 @@
     }
   });
 
-  // ----- dual clocks -----
+  // ----- clock -----
   function tick(){
     var d = new Date();
-    function p(n){ return (n<10?"0":"")+n; }
-
-    // Viewer's Local Time
-    document.getElementById("clock-local").textContent =
-      p(d.getHours()) + ":" + p(d.getMinutes()) + ":" + p(d.getSeconds());
 
     // Rubhav's Time (NL - CET/CEST)
     var nlFormatter = new Intl.DateTimeFormat('en-GB', {
