@@ -1,0 +1,1041 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RUBHAV NAYAK</title>
+<meta name="description" content="Rubhav Nayak">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap">
+<style>
+  /* ============ TYPE ============ */
+  :root{
+    --bg:#000000;
+    --amber:#ff8c00;      /* chrome, section headers */
+    --amber-dim:#7a4400;
+    --cyan:#3ad6ff;       /* institutions, project titles, links */
+    --green:#3aff7a;      /* metrics / quantitative results */
+    --yellow:#ffd23a;     /* tech keywords, function keys */
+    --red:#ff4d4d;        /* alerts / down */
+    --white:#e6e6e6;      /* body text */
+    --dim:#7d7d7d;        /* labels, dates, secondary */
+    --dimmer:#4a4a4a;     /* rules */
+    --select:#1c1c00;
+    --topbar:38px;
+    --cmdbar:34px;
+    --fnbar:34px;
+    --mono: "JetBrains Mono","IBM Plex Mono",ui-monospace,"SF Mono","Cascadia Code",Menlo,Consolas,"DejaVu Sans Mono",monospace;
+  }
+
+  *{box-sizing:border-box;}
+  .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;
+    clip:rect(0,0,0,0);white-space:nowrap;border:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0; background:var(--bg); color:var(--white);
+    font-family:var(--mono); font-size:14px; line-height:1.55;
+    letter-spacing:.2px; -webkit-font-smoothing:antialiased;
+    padding-top:calc(var(--topbar) + var(--cmdbar));
+    padding-bottom:var(--fnbar);
+  }
+  ::selection{background:var(--amber);color:#000;}
+  a{color:var(--cyan);text-decoration:none;border-bottom:1px solid transparent;}
+  a:hover{border-bottom-color:var(--cyan);}
+  a:focus-visible,
+  [tabindex]:focus-visible{outline:2px solid var(--amber);outline-offset:2px;background:var(--select);}
+
+  /* ============ TOP STATUS BAR ============ */
+  .topbar{
+    position:fixed;top:0;left:0;right:0;height:var(--topbar);z-index:40;
+    background:#000;border-bottom:1px solid var(--amber);
+    display:flex;align-items:center;gap:16px;padding:0 12px;
+    font-weight:700;overflow:hidden;white-space:nowrap;
+  }
+  .tkr{color:var(--amber);}
+  .tkr .sub{color:var(--dim);font-weight:400;}
+  .live{color:var(--green);font-weight:700;}
+  .live .dot{display:inline-block;width:7px;height:7px;border-radius:50%;
+    background:var(--green);margin-right:5px;vertical-align:middle;
+    box-shadow:0 0 6px var(--green);animation:blink 1.4s steps(1) infinite;}
+  .topbar .spacer{flex:1;}
+  .topbar .meta{color:var(--dim);font-weight:400;}
+  
+  /* Clocks */
+  .clocks{display:flex;gap:10px;color:var(--white);}
+  .clocks .lbl{color:var(--dim);font-weight:400;margin-left:4px;}
+  .clocks .sep{color:var(--dimmer);font-weight:400;}
+
+  /* ============ COMMAND LINE ============ */
+  .cmdbar{
+    position:fixed;top:var(--topbar);left:0;right:0;height:var(--cmdbar);z-index:39;
+    background:#070500;border-bottom:1px solid var(--dimmer);
+    display:flex;align-items:center;padding:0 12px;gap:8px;
+  }
+  .cmdbar .prompt{color:var(--amber);font-weight:700;}
+  #cmd{
+    flex:1;background:transparent;border:none;outline:none;
+    color:var(--amber);font-family:var(--mono);font-size:14px;
+    font-weight:700;letter-spacing:1px;text-transform:uppercase;caret-color:var(--amber);
+  }
+  #cmd::placeholder{color:var(--amber-dim);text-transform:none;letter-spacing:.5px;font-weight:400;}
+  .cmdbar .go{color:var(--dim);font-size:12px;}
+  .cmdbar .go b{color:var(--green);}
+
+  /* ============ LAYOUT ============ */
+  .wrap{display:flex;max-width:1180px;margin:0 auto;}
+  .index{
+    width:188px;flex:none;position:sticky;top:calc(var(--topbar) + var(--cmdbar));
+    align-self:flex-start;height:calc(100vh - var(--topbar) - var(--cmdbar) - var(--fnbar));
+    padding:14px 0 14px 12px;border-right:1px solid var(--dimmer);
+  }
+  .index .ihead{color:var(--dim);font-size:11px;letter-spacing:2px;margin-bottom:8px;}
+  .index a{display:flex;gap:10px;align-items:baseline;color:var(--white);
+    padding:3px 8px;border-bottom:none;border-left:2px solid transparent;}
+  
+  /* Nested Nav Styling */
+  .index a.sub-link{padding-left:24px;font-size:13px; display:none;}
+  .index a.sub-link .m{width:24px;}
+  
+  /* Show sub-links only when parent active */
+  .index.active-resume a.sub-link {display:flex;}
+  
+  .index a .k{color:var(--yellow);font-weight:700;width:14px;}
+  .index a .m{color:var(--amber);font-weight:700;width:34px;}
+  .index a:hover{background:var(--select);}
+  .index a.on{border-left-color:var(--amber);background:var(--select);}
+  .index a.on .label{color:var(--amber);}
+  .index .label{color:var(--dim);}
+
+  main{flex:1;min-width:0;padding:24px 26px 80px;}
+
+  /* ============ SECTIONS & HEADERS ============ */
+  main > section { display: none; }
+  main > section.active { display: block; }
+  
+  section{scroll-margin-top:calc(var(--topbar) + var(--cmdbar) + 12px);margin-bottom:40px;}
+  .resume-section{scroll-margin-top:calc(var(--topbar) + var(--cmdbar) + 12px);}
+  
+  .sechead{
+    margin:0 0 16px;font-size:14px;
+    display:flex;align-items:center;gap:12px;
+    background:var(--amber);color:#000;font-weight:700;
+    padding:3px 10px;letter-spacing:1px;
+  }
+  .sechead .mn{color:#000;}
+  .sechead .ti{flex:none;}
+  .sechead .spacer{flex:1;}
+  .sechead .no{color:#3a2400;font-size:12px;}
+  .sechead .dl-link{color:#000;font-weight:700;font-size:14px;margin-left:12px;border-bottom:1px solid transparent;}
+  .sechead .dl-link:hover{border-bottom-color:#000;}
+  
+  /* Flash target animations */
+  section.flash .sechead,
+  .resume-section.flash .subhead{
+    animation:flashbar .9s ease-out;
+  }
+
+  /* Inside-section grouping */
+  .subhead{
+    color:var(--cyan);font-size:14px;letter-spacing:2px;
+    margin:36px 0 16px;border-bottom:1px solid var(--dimmer);
+    padding-bottom:8px;font-weight:700;
+  }
+  .resume-section:first-child .subhead{margin-top:4px;}
+
+  .body{padding:0 4px;}
+  .lede{color:var(--white);max-width:none;margin:0 0 16px;}
+  .lede .hl{color:var(--yellow);}
+  .lede .loc{color:var(--cyan);}
+  .empty-note{color:var(--dim);font-style:italic;}
+
+  /* ============ UNIFORM ENTRIES (Edu, Exp, Prj) ============ */
+  .entry{margin-bottom:24px;}
+  .entry:last-child{margin-bottom:0;}
+  
+  .entry-hdr{display:flex;justify-content:space-between;align-items:baseline;gap:16px;flex-wrap:wrap;margin-bottom:2px;}
+  .entry-title{color:var(--white);font-weight:700;}
+  .entry-title .hl{color:var(--cyan);}
+  .entry-title .org{color:var(--white);font-weight:400;}
+  
+  .entry-date{color:var(--dim);font-size:13px;white-space:nowrap;}
+  
+  .entry-sub{color:var(--dim);font-size:13px;margin-bottom:8px;}
+  .entry-sub .tag{color:var(--amber);}
+  .entry-sub .gpa{color:var(--green);font-weight:700;}
+
+  /* Common point lists */
+  ul.points{list-style:none;margin:8px 0 0;padding:0;}
+  ul.points li{position:relative;padding-left:16px;margin:4px 0;color:var(--white);}
+  ul.points li::before{content:"›";position:absolute;left:0;color:var(--amber);font-weight:700;}
+  
+  .field{margin-top:6px;}
+  .field .lbl{color:var(--dim);font-size:13px;}
+  .courses{color:var(--white);}
+  .courses .sep{color:var(--dimmer);}
+
+  /* inline colored tokens */
+  .num{color:var(--green);font-weight:700;}
+  .tech{color:var(--yellow);}
+
+  /* ============ SKILLS GRID ============ */
+  .skl .row{display:flex;gap:10px;margin:8px 0;flex-wrap:wrap;align-items:baseline;}
+  .skl .row .lbl{color:var(--dim);width:120px;flex:none;font-size:13px;}
+  .skl .chips{display:flex;gap:6px 0;flex-wrap:wrap;}
+  .chip{color:var(--yellow);}
+  .chip.lang{color:var(--white);}
+  .chip.lang .lvl{color:var(--green);}
+  .chip.lang .native{color:var(--cyan);}
+  .pipe{color:var(--dimmer);margin:0 8px;}
+
+  /* ============ CONTACT ============ */
+  .con .row{display:flex;gap:10px;margin:6px 0;}
+  .con .lbl{color:var(--dim);width:120px;flex:none;}
+
+  /* ============ FUNCTION KEY BAR ============ */
+  .fnbar{
+    position:fixed;left:0;right:0;bottom:0;height:var(--fnbar);z-index:40;
+    background:#000;border-top:1px solid var(--amber);
+    display:flex;align-items:center;gap:2px;padding:0 8px;overflow-x:auto;
+    font-size:12.5px;
+  }
+  .fnbar .fk{display:flex;align-items:center;gap:5px;padding:2px 9px;cursor:pointer;
+    white-space:nowrap;border:none;background:transparent;font-family:var(--mono);}
+  .fnbar .fk .k{background:var(--yellow);color:#000;font-weight:700;padding:0 5px;border-radius:1px;}
+  .fnbar .fk .t{color:var(--dim);letter-spacing:.5px;}
+  .fnbar .fk:hover .t,.fnbar .fk:focus-visible .t{color:var(--amber);}
+  .fnbar .stat{margin-left:auto;color:var(--dim);white-space:nowrap;padding-left:14px;}
+  .fnbar .stat b{color:var(--green);}
+
+  /* ============ HELP OVERLAY ============ */
+  .help{position:fixed;inset:0;z-index:60;background:rgba(0,0,0,.92);
+    display:none;align-items:center;justify-content:center;padding:20px;}
+  .help.open{display:flex;}
+  .help .card{border:1px solid var(--amber);background:#000;max-width:620px;width:100%;
+    padding:0;max-height:86vh;overflow:auto;}
+  .help h2{background:var(--amber);color:#000;margin:0;padding:6px 12px;font-size:14px;letter-spacing:1px;
+    display:flex;justify-content:space-between;}
+  .help h2 .x{color:#3a2400;}
+  .help .grid{padding:14px 16px;}
+  .help .kv{display:flex;gap:14px;margin:5px 0;}
+  .help .kv kbd{background:#111;border:1px solid var(--dimmer);color:var(--yellow);
+    padding:1px 7px;min-width:54px;text-align:center;font-family:var(--mono);border-radius:2px;font-weight:700;}
+  .help .kv span{color:var(--white);}
+  .help .note{color:var(--dim);padding:0 16px 14px;font-size:12px;}
+
+  @keyframes blink{0%,60%{opacity:1}61%,100%{opacity:.15}}
+  @keyframes flashbar{0%{background:var(--green);color:#000;}100%{background:transparent;color:var(--cyan);}}
+  section.flash .sechead{animation:flashbar .9s ease-out; color:#000; background:var(--amber);}
+
+  /* ============ RESPONSIVE ============ */
+  @media(max-width:760px){
+    .index{display:none;}
+    main{padding:16px 14px 80px;}
+    .topbar .meta{display:none;}
+    .clocks .lbl {display:none;} /* save space on mobile */
+  }
+
+  /* ============ REDUCED MOTION ============ */
+  @media(prefers-reduced-motion:reduce){
+    html{scroll-behavior:auto;}
+    .live .dot{animation:none;}
+    section.flash .sechead, .resume-section.flash .subhead{animation:none;}
+  }
+
+  /* ============ HOME SECTION ============ */
+  .home-hero{display:flex;gap:24px;align-items:flex-start;margin-bottom:28px;flex-wrap:wrap;}
+  .home-photo-wrap{flex:none;}
+  .home-photo{
+    width:152px;height:180px;object-fit:cover;object-position:top center;
+    display:block;border:2px solid var(--amber);
+  }
+  .home-photo-cap{color:var(--dim);font-size:11px;letter-spacing:1.5px;margin-top:4px;text-align:center;}
+  .home-ident{flex:1;min-width:200px;display:flex;flex-direction:column;gap:5px;}
+  .home-name{color:var(--amber);font-size:20px;font-weight:700;letter-spacing:3px;}
+  .home-role{font-size:13px;}
+  .home-inst-line{font-size:13px;color:var(--cyan);}
+  .home-track-line{color:var(--dim);font-size:12px;}
+  .home-loc{color:var(--dim);font-size:12px;}
+  .home-status-line{font-size:13px;margin-top:4px;}
+  .home-links{display:flex;gap:6px;align-items:center;font-size:13px;margin-top:8px;}
+
+  .home-stats{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:28px;}
+  .stat-card{border:1px solid var(--dimmer);padding:10px 16px;min-width:90px;flex:1;background:#050300;}
+  .stat-val{font-size:22px;font-weight:700;}
+  .stat-lbl{color:var(--dim);font-size:11px;letter-spacing:.8px;margin-top:3px;}
+
+  .home-nav-cards{display:flex;gap:10px;flex-wrap:wrap;margin-top:0;}
+  .nav-card{
+    border:1px solid var(--dimmer);padding:12px 14px;flex:1;min-width:150px;
+    background:#050300;cursor:pointer;text-align:left;font-family:var(--mono);
+    font-size:14px;color:var(--white);
+    transition:border-color .15s,background .15s;
+  }
+  .nav-card:hover{border-color:var(--amber);background:var(--select);}
+  .nav-card:focus-visible{outline:2px solid var(--amber);outline-offset:2px;}
+  .nav-card-key{color:var(--yellow);font-weight:700;font-size:12px;margin-bottom:5px;letter-spacing:1px;}
+  .nav-card-title{color:var(--amber);font-weight:700;letter-spacing:1px;margin-bottom:4px;}
+  .nav-card-desc{color:var(--dim);font-size:12px;}
+
+  /* ============ GALLERY ============ */
+  .gal-hint{color:var(--dim);font-size:12px;margin-bottom:16px;letter-spacing:.4px;}
+  .gal-hint .tech{font-size:12px;}
+  .gal-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
+  .gal-item{
+    cursor:pointer;border:2px solid var(--dimmer);
+    background:#050300;position:relative;overflow:hidden;
+    aspect-ratio:3/2;outline:none;
+  }
+  .gal-item:hover,.gal-item:focus-visible{border-color:var(--amber);}
+  .gal-item img{width:100%;height:100%;object-fit:cover;display:block;filter:grayscale(18%);transition:filter .25s;}
+  .gal-item:hover img,.gal-item:focus-visible img{filter:grayscale(0%);}
+  .gal-num{
+    position:absolute;bottom:4px;right:6px;
+    color:var(--amber);font-size:11px;font-weight:700;
+    background:rgba(0,0,0,.75);padding:1px 6px;letter-spacing:1px;pointer-events:none;
+  }
+
+  /* ============ LIGHTBOX ============ */
+  .lightbox{
+    position:fixed;inset:0;z-index:70;background:rgba(0,0,0,.97);
+    display:none;flex-direction:column;
+  }
+  .lightbox.open{display:flex;}
+  .lb-bar{
+    flex:none;height:36px;border-bottom:1px solid var(--amber);
+    background:#000;display:flex;align-items:center;padding:0 12px;gap:12px;
+  }
+  .lb-bar-count{color:var(--amber);font-weight:700;font-size:13px;letter-spacing:2px;}
+  .lb-bar-spacer{flex:1;}
+  .lb-close-btn{
+    background:transparent;border:1px solid var(--dimmer);
+    color:var(--amber);font-family:var(--mono);font-size:12px;font-weight:700;
+    padding:2px 10px;cursor:pointer;letter-spacing:1px;
+  }
+  .lb-close-btn:hover,.lb-close-btn:focus-visible{border-color:var(--amber);outline:none;}
+  .lb-img-wrap{
+    flex:1;min-height:0;position:relative;
+    display:flex;align-items:center;justify-content:center;overflow:hidden;
+    padding:12px 56px;
+  }
+  .lb-img{max-width:100%;max-height:100%;object-fit:contain;display:block;border:1px solid var(--amber);}
+  .lb-arrow{
+    position:absolute;top:50%;transform:translateY(-50%);
+    background:rgba(0,0,0,.6);border:1px solid var(--dimmer);
+    color:var(--amber);font-family:var(--mono);font-size:16px;font-weight:700;
+    width:38px;height:54px;cursor:pointer;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .lb-arrow:hover:not(:disabled){border-color:var(--amber);background:rgba(255,140,0,.1);}
+  .lb-arrow:focus-visible{outline:2px solid var(--amber);outline-offset:2px;}
+  .lb-arrow:disabled{opacity:.2;cursor:default;}
+  .lb-arrow.left{left:8px;}
+  .lb-arrow.right{right:8px;}
+  .lb-meta{
+    flex:none;border-top:1px solid var(--dimmer);background:#030200;
+    padding:10px 14px;
+  }
+  .lb-meta-row{display:flex;gap:20px;flex-wrap:wrap;}
+  .lb-meta-row + .lb-meta-row{margin-top:5px;}
+  .lb-field{display:flex;gap:8px;align-items:baseline;}
+  .lb-lbl{color:var(--dim);font-size:11px;letter-spacing:1.5px;white-space:nowrap;}
+  .lb-val{color:var(--white);font-size:13px;}
+  .lb-val.empty{color:var(--dimmer);font-style:italic;}
+
+  @media(max-width:760px){
+    .gal-grid{grid-template-columns:repeat(2,1fr);}
+    .lb-meta-row{gap:12px;}
+  }
+  @media(max-width:480px){
+    .gal-grid{grid-template-columns:1fr;}
+  }
+
+  /* ============ PRINT ============ */
+  @media print{
+    body{background:#fff;color:#000;padding:0;font-size:11px;}
+    .topbar,.cmdbar,.fnbar,.index,.help{display:none!important;}
+    .wrap{display:block;}
+    main > section{display:block; margin-bottom:40px;}
+    main{padding:0;}
+    .sechead{background:#000;color:#fff;}
+    a{color:#000;}
+    .entry-title .hl {color:#000;font-weight:700;}
+    .num,.tech,.chip,.gpa{color:#000;font-weight:700;}
+    section{break-inside:avoid;}
+    .subhead{color:#000;border-bottom:1px solid #ccc;}
+  }
+</style>
+</head>
+<body>
+<h1 class="sr-only">Rubhav Nayak</h1>
+
+<!-- TOP STATUS BAR -->
+<header class="topbar">
+  <span class="tkr">RUBHAV NAYAK&nbsp;</span>
+  <span class="spacer"></span>
+  
+  <!-- DUAL CLOCKS -->
+  <span class="clocks" aria-label="Current time">
+    <span id="clock-local" title="Your Local Time">--:--:--</span><span class="lbl">LOCAL
+    </span>
+    <span class="sep">|</span>
+    <span id="clock-cest" title="Rubhav's Time (CEST/CET)">--:--:--</span><span class="lbl">NL</span>
+  </span>
+</header>
+
+<!-- COMMAND LINE -->
+<div class="cmdbar">
+  <span class="prompt">&gt;</span>
+  <input id="cmd" autocomplete="off" spellcheck="false"
+         aria-label="Command line. Type a code such as HOME, RESUME, OBJ, EDU, PRJ, CONT and press Enter"
+         placeholder="Press F1 for help">
+  <span class="go">&lt;<b>GO</b>&gt;</span>
+</div>
+
+<div class="wrap">
+
+  <!-- LEFT INDEX -->
+  <nav class="index" aria-label="Section index">
+    <div class="ihead">MENU</div>
+    
+    <a href="#home" data-mn="HOME"><span class="k">1</span><span class="m">HOME</span><span class="label">Home</span></a>
+    
+    <a href="#resume" data-mn="RES"><span class="k">2</span><span class="m">RES</span><span class="label">Resume</span></a>
+    <a href="#obj" class="sub-link" data-mn="OBJ"><span class="k"></span><span class="m">OBJ</span><span class="label">Objective</span></a>
+    <a href="#edu" class="sub-link" data-mn="EDU"><span class="k"></span><span class="m">EDU</span><span class="label">Education</span></a>
+    <a href="#exp" class="sub-link" data-mn="EXP"><span class="k"></span><span class="m">EXP</span><span class="label">Experience</span></a>
+    <a href="#skl" class="sub-link" data-mn="SKL"><span class="k"></span><span class="m">SKL</span><span class="label">Skills</span></a>
+    <a href="#prj" class="sub-link" data-mn="PRJ"><span class="k"></span><span class="m">PRJ</span><span class="label">Projects</span></a>
+
+    <a href="#pic" data-mn="PIC"><span class="k">3</span><span class="m">PIC</span><span class="label">Gallery</span></a>
+    
+    <a href="#contact" data-mn="CON"><span class="k">4</span><span class="m">CON</span><span class="label">Contact</span></a>
+  </nav>
+
+  <main>
+
+    <!-- SECTION 1: HOME -->
+    <section id="home">
+      <h2 class="sechead"><span class="ti">HOME</span><span class="spacer"></span><span class="no">01 / 04</span></h2>
+      <div class="body">
+
+        <!-- Hero: Photo + Identity -->
+        <div class="home-hero">
+          <div class="home-photo-wrap">
+            <img src="assets/rubhav_homepage.jpg" alt="Rubhav Nayak" class="home-photo">
+            <div class="home-photo-cap">RUBHAV_NAYAK.JPG</div>
+          </div>
+          <div class="home-ident">
+            <div class="home-name">RUBHAV NAYAK</div>
+            <div class="home-role"><span class="tech">MSc Electrical Engineering</span></div>
+            <div class="home-inst-line">Delft University of Technology</div>
+            <div class="home-loc">Delft, Netherlands</div>
+            <div class="home-status-line">
+              <span class="live"><span class="dot"></span>OPEN TO WORK</span>&nbsp;&nbsp;<span style="color:var(--dim)">Internship · Signal Processing / Embedded DSP · NL · BE · FR </span>
+            </div>
+            <!--div class="home-links">
+              <a href="mailto:rubhavnayak@gmail.com">EMAIL</a>
+              <span class="pipe">|</span>
+              <a href="https://www.linkedin.com/in/rubhav" target="_blank" rel="noopener">LINKEDIN</a>
+              <span class="pipe">|</span>
+              <a href="https://github.com/rubhavnayak" target="_blank" rel="noopener">GITHUB</a>
+            /div-->
+          </div>
+        </div>
+
+        <!-- About -->
+        <div class="subhead">[ ABOUT ]</div>
+        <p class="lede">
+          Hello and welcome to my website! I'm <span class="num">Rubhav Nayak</span>. I am currently a full-time Master's student studying <span class="hl">Electrical Engineering</span> at <span class="loc">TU Delft</span>. Prior to that, I completed my Bachelor's at the <span class="loc">University of Illinois at Urbana-Champaign</span>, where I graduated with honors in <span class="hl">Electrical Engineering</span>.
+        </p>
+        <p class="lede">
+          Outside of school, you can find me trying out film photography (see <a href="#pic" onclick="goTo('pic'); return false;">Gallery</a> for some of my favourites), playing video games, and experimenting in the kitchen. I also enjoy traveling, having visited 15 countries (and counting!) across 5 continents. Being a plane nerd, I also document my flights on <a href="https://my.flightradar24.com/rngeekerd" target="_blank" rel="noopener">myFlightRadar24</a>, and you might run into me planespotting at Amsterdam Airport Schiphol :)
+        </p>
+
+      </div>
+    </section>
+
+    <!-- SECTION 2: RESUME -->
+    <section id="resume">
+      <h2 class="sechead"><span class="ti">RESUME</span><a href="assets/Resume-Rubhav-2026.pdf" download class="dl-link">[ DOWNLOAD AS PDF ]</a><span class="spacer"></span><span class="no">02 / 04</span></h2>
+      <div class="body">
+
+        <!-- SUB: OBJECTIVE -->
+        <div id="obj" class="resume-section">
+          <div class="subhead">[ OBJECTIVE ]</div>
+          <p class="lede">
+            MSc <span class="hl">Electrical Engineering</span> student at <span class="loc">TU Delft (Signals &amp; Systems)</span> with hands-on experience in real-time <span class="hl">FPGA-based systems</span>, <span class="hl">audio signal processing</span>, and graduate-level coursework in sensor signal processing, estimation, detection, distributed systems and machine learning. 
+          </p>
+          <p class="lede">
+            Seeking an internship in <span class="hl">signal processing or embedded DSP</span> within the Netherlands, contributing existing skillsets while developing industry experience.
+          </p>
+        </div>
+
+        <!-- SUB: EDUCATION -->
+        <div id="edu" class="resume-section">
+          <div class="subhead">[ EDUCATION ]</div>
+          
+          <div class="entry">
+            <div class="entry-hdr">
+              <div class="entry-title"><span class="hl">MSc, Electrical Engineering</span> <span class="org">— Delft University of Technology</span></div>
+              <div class="entry-date">SEP 2024 – JUL 2027</div>
+            </div>
+            <div class="entry-sub">Track: Signals &amp; Systems</div>
+            <div class="field">
+              <span class="lbl">KEY COURSES:</span>
+              <div class="courses">
+                Statistical Digital Signal Processing <span class="sep">|</span> Machine Learning <span class="sep">|</span> Control System Design <span class="sep">|</span> Applied Convex Optimization <span class="sep">|</span> Estimation &amp; Detection <span class="sep">|</span> Probabilistic Sensor Fusion <span class="sep">|</span> Data Compression <span class="sep">|</span> Advanced Digital Image Processing <span class="sep">|</span> Sensor Signal &amp; Data Processing <span class="sep">|</span> Distributed Signal Processing <span class="sep">|</span> Wavefield &amp; MRI Imaging
+              </div>
+            </div>
+          </div>
+
+          <div class="entry">
+            <div class="entry-hdr">
+              <div class="entry-title"><span class="hl">BSc, Electrical Engineering</span> <span class="org">— Univ. of Illinois Urbana-Champaign</span></div>
+              <div class="entry-date">AUG 2019 – MAY 2023</div>
+            </div>
+            <div class="entry-sub">Graduated with Honors · <span class="gpa">GPA: 3.66 / 4.0</span></div>
+            <div class="field">
+              <span class="lbl">KEY COURSES:</span>
+              <div class="courses">
+                Computer Systems &amp; Programming <span class="sep">|</span> Data Structures <span class="sep">|</span> Analog/Digital Signal Processing <span class="sep">|</span> Fields &amp; Waves <span class="sep">|</span> Digital Systems Laboratory <span class="sep">|</span> Electronic Circuits <span class="sep">|</span> Sensors &amp; Instrumentation <span class="sep">|</span> Power Circuits <span class="sep">|</span> Semiconductor Devices <span class="sep">|</span> Image &amp; Video Processing
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- SUB: EXPERIENCE -->
+        <div id="exp" class="resume-section">
+          <div class="subhead">[ EXPERIENCE ]</div>
+          
+          <div class="entry">
+            <div class="entry-hdr">
+              <div class="entry-title"><span class="hl">Teaching Assistant</span> <span class="org">— University of Illinois</span></div>
+              <div class="entry-date">JAN 2022 – MAY 2023</div>
+            </div>
+            <div class="entry-sub">Champaign, IL, USA</div>
+            <div class="entry-body">
+              <ul class="points">
+                <li>Evaluated lab assignments and supported <span class="num">~30 students</span> per semester in the Digital Signal Processing Laboratory course.</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="entry">
+            <div class="entry-hdr">
+              <div class="entry-title"><span class="hl">Member</span> <span class="org">— IEEE-HKN Honor Society, Alpha Chapter</span></div>
+              <div class="entry-date">JAN 2021 – MAY 2022</div>
+            </div>
+            <div class="entry-sub">Champaign, IL, USA</div>
+            <div class="entry-body">
+              <ul class="points">
+                <li>Conducted exam review sessions and hosted office hours for students in 100- and 200-level electrical engineering classes.</li>
+                <li>Mentored students on prospective classes and clubs based on their current and broader interests.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- SUB: SKILLS -->
+        <div id="skl" class="resume-section">
+          <div class="subhead">[ SKILLS ]</div>
+          <div class="skl">
+            <div class="row">
+              <span class="lbl">PYTHON:</span>
+              <div class="chips">
+                <span class="chip">Python</span><span class="pipe">|</span><span class="chip">NumPy</span><span class="pipe">|</span><span class="chip">SciPy</span><span class="pipe">|</span><span class="chip">scikit-learn</span>
+              </div>
+            </div>
+            <div class="row">
+              <span class="lbl">MATLAB:</span>
+              <div class="chips">
+                <span class="chip">MATLAB</span><span class="pipe">|</span><span class="chip">Simulink</span><span class="pipe">|</span><span class="chip">Image Processing Toolbox</span>
+              </div>
+            </div>
+            <div class="row">
+              <span class="lbl">CORE:</span>
+              <div class="chips">
+                <span class="chip">C</span><span class="pipe">|</span><span class="chip">C++</span><span class="pipe">|</span><span class="chip">Java</span><span class="pipe">|</span><span class="chip">Verilog</span><span class="pipe">|</span><span class="chip">OpenCV</span><span class="pipe">|</span><span class="chip">Git</span>
+              </div>
+            </div>
+            <div class="row">
+              <span class="lbl">LANGUAGES:</span>
+              <div class="chips">
+                <span class="chip lang">English <span class="native">[NATIVE]</span></span><span class="pipe">|</span><span class="chip lang">Hindi <span class="native">[NATIVE]</span></span><span class="pipe">|</span><span class="chip lang">Odia <span class="native">[NATIVE]</span></span><span class="pipe">|</span><span class="chip lang">French <span class="lvl">[B2]</span></span><span class="pipe">|</span><span class="chip lang">Dutch <span class="lvl">[A2]</span></span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- SUB: PROJECTS -->
+        <div id="prj" class="resume-section">
+          <div class="subhead">[ PROJECTS ]</div>
+          
+          <div class="entry">
+            <div class="entry-hdr">
+              <div class="entry-title"><span class="hl">Image Restoration</span></div>
+              <div class="entry-date">OCT 2025</div>
+            </div>
+            <div class="entry-sub">Course Project · <span class="tag">EE4C03 Statistical DSP, TU Delft</span></div>
+            <div class="entry-body">
+              <ul class="points">
+                <li>Implemented a custom motion blur filter and Wiener filter from scratch in <span class="tech">MATLAB</span>; custom blur matched MATLAB's <span class="tech">fspecial()</span> benchmark with SSIM difference <span class="num">&lt; 0.005</span>.</li>
+                <li>Derived the MMSE-optimal Wiener solution estimating signal power spectrum from the distorted image alone; achieved SSIM of <span class="num">0.40</span> vs. <span class="num">0.06</span> for inverse filtering under Gaussian noise (σ² = 10⁻³).</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="entry">
+            <div class="entry-hdr">
+              <div class="entry-title"><span class="hl">Edge-Aware Image Editing</span></div>
+              <div class="entry-date">JUN 2025</div>
+            </div>
+            <div class="entry-sub">Course Project · <span class="tag">AP3132 Advanced Digital Image Processing, TU Delft</span></div>
+            <div class="entry-body">
+              <ul class="points">
+                <li>Implemented Local Laplacian Filtering from scratch in <span class="tech">MATLAB</span>, building Gaussian/Laplacian pyramid decomposition and a nonlinear remapping function that distinguishes fine-scale detail from strong edges.</li>
+                <li>Benchmarked against MATLAB's built-in <span class="tech">locallapfilt()</span> and a bilateral filter; demonstrated comparable edge-preservation quality with full parametric control over detail (α) and edge contrast (β).</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="entry">
+            <div class="entry-hdr">
+              <div class="entry-title"><span class="hl">Distributed Consensus Algorithms</span></div>
+              <div class="entry-date">JUN 2025</div>
+            </div>
+            <div class="entry-sub">Course Project · <span class="tag">EE4540 Distributed Signal Processing, TU Delft</span></div>
+            <div class="entry-body">
+              <ul class="points">
+                <li>Implemented Randomized Gossip and PDMM for distributed average and median consensus over a <span class="num">201-node</span> sensor network in <span class="tech">Python</span>, achieving faster convergence with PDMM.</li>
+                <li>Analyzed robustness under simulated sensor and transmission failures, comparing average and median consensus performance.</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="entry">
+            <div class="entry-hdr">
+              <div class="entry-title"><span class="hl">Real-Time Object Tracker</span></div>
+              <div class="entry-date">DEC 2022</div>
+            </div>
+            <div class="entry-sub">Course Project · <span class="tag">ECE437 Sensors &amp; Instrumentation, UIUC</span></div>
+            <div class="entry-body">
+              <ul class="points">
+                <li>Implemented real-time light-source tracking at <span class="num">20 FPS</span> on a Xilinx <span class="tech">FPGA</span> system, using <span class="tech">OpenCV</span> for brightness-based detection and a motor-driven correction loop.</li>
+                <li>Wrote I2C, SPI, and GPIO finite state machines in <span class="tech">Verilog</span> for sensor communication across a CVM300 imaging sensor, LSM303 IMU, and H-bridge motor controller.</li>
+                <li>Built a multithreaded <span class="tech">Python</span> pipeline for high-speed FPGA-to-PC image transfer, achieving <span class="num">30 FPS</span> throughput independent of IMU processing.</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="entry">
+            <div class="entry-hdr">
+              <div class="entry-title"><span class="hl">EchoRanger</span></div>
+              <div class="entry-date">APR 2022</div>
+            </div>
+            <div class="entry-sub">Course Project · <span class="tag">ECE420 Embedded Digital Signal Processing, UIUC</span></div>
+            <div class="entry-body">
+              <ul class="points">
+                <li>Implemented a <span class="tech">Java</span>-based Android SONAR ranging application based on Graham's chirp-correlation method, computing cross-correlation between transmitted and received signals to estimate distance.</li>
+                <li>Achieved <span class="num">±0.2 m</span> accuracy at <span class="num">3 m</span> range; validated by comparing Android output against a <span class="tech">Python</span> reference implementation.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 3: GALLERY -->
+    <section id="pic">
+      <h2 class="sechead"><span class="ti">GALLERY</span><span class="spacer"></span><span class="no">03 / 04</span></h2>
+      <div class="body">
+        <p class="gal-hint"><span class="tech">TAB / ← →</span> navigate &nbsp;·&nbsp; <span class="tech">ENTER</span> open &nbsp;·&nbsp; <span class="tech">ESC</span> close</p>
+        <div class="gal-grid" id="gal-grid" role="grid" aria-label="Photo gallery"></div>
+      </div>
+    </section>
+
+    <!-- SECTION 4: CONTACT -->
+    <section id="contact">
+      <h2 class="sechead"><span class="ti">CONTACT</span><span class="spacer"></span><span class="no">04 / 04</span></h2>
+      <div class="body con">
+        <div class="row"><span class="lbl">LOCATION:</span><span>Delft, Netherlands</span></div>
+        <div class="row"><span class="lbl">EMAIL:</span><a href="mailto:rubhavnayak@gmail.com">rubhavnayak@gmail.com</a></div>
+        <div class="row"><span class="lbl">LINKEDIN:</span><a href="https://www.linkedin.com/in/rubhav" target="_blank" rel="noopener">linkedin.com/in/rubhav</a></div>
+        <div class="row"><span class="lbl">GITHUB:</span><a href="https://github.com/rubhavnayak" target="_blank" rel="noopener">github.com/rubhavnayak</a></div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Photo viewer">
+  <div class="lb-bar">
+    <span class="lb-bar-count" id="lb-bar-count">01 / 07</span>
+    <span class="lb-bar-spacer"></span>
+    <button class="lb-close-btn" id="lb-close-btn" aria-label="Close lightbox">[ESC] CLOSE</button>
+  </div>
+  <div class="lb-img-wrap">
+    <button class="lb-arrow left" id="lb-prev" aria-label="Previous photo">&#9664;</button>
+    <img src="" alt="" class="lb-img" id="lb-img">
+    <button class="lb-arrow right" id="lb-next" aria-label="Next photo">&#9654;</button>
+  </div>
+  <div class="lb-meta">
+    <div class="lb-meta-row">
+      <div class="lb-field"><span class="lb-lbl">DATE</span><span class="lb-val empty" id="lb-date">—</span></div>
+      <div class="lb-field"><span class="lb-lbl">LOCATION</span><span class="lb-val empty" id="lb-location">—</span></div>
+      <div class="lb-field"><span class="lb-lbl">CAMERA</span><span class="lb-val empty" id="lb-camera">—</span></div>
+      <div class="lb-field"><span class="lb-lbl">FILM</span><span class="lb-val empty" id="lb-film">—</span></div>
+    </div>
+    <div class="lb-meta-row">
+      <div class="lb-field"><span class="lb-lbl">NOTES</span><span class="lb-val empty" id="lb-notes">—</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- FUNCTION KEY BAR -->
+<footer class="fnbar">
+  <button class="fk" data-help="1"><span class="k">?</span><span class="t">HELP</span></button>
+  <span class="stat">SECTION <b id="curr">HOME</b> · READY</span>
+</footer>
+
+<!-- HELP OVERLAY -->
+<div class="help" id="help" role="dialog" aria-modal="true" aria-label="Keyboard shortcuts">
+  <div class="card">
+    <h2>KEYBOARD SHORTCUTS <span class="x">[ESC TO CLOSE]</span></h2>
+    <div class="grid">
+      <div class="kv"><kbd>1 – 4</kbd><span>Jump to top sections (Home · Resume · Gallery · Contact)</span></div>
+      <div class="kv"><kbd>← →</kbd><span>Navigate photos in gallery / lightbox</span></div>
+      <div class="kv"><kbd>/</kbd><span>Focus command line</span></div>
+      <div class="kv"><kbd>ENTER</kbd><span>Run command (e.g. HOME, RES, OBJ, EDU, PRJ)</span></div>
+      <div class="kv"><kbd>j / k</kbd><span>Scroll down / up</span></div>
+      <div class="kv"><kbd>n / p</kbd><span>Next / previous main section</span></div>
+      <div class="kv"><kbd>g / G</kbd><span>Go to top / bottom</span></div>
+      <div class="kv"><kbd>TAB</kbd><span>Move between links</span></div>
+      <div class="kv"><kbd>? / F1</kbd><span>Toggle this help</span></div>
+      <div class="kv"><kbd>ESC</kbd><span>Close help / leave command line</span></div>
+    </div>
+    <div class="note">Commands accept the 3-letter code or full name. Trailing "GO" is ignored.</div>
+  </div>
+</div>
+
+<script>
+(function(){
+  "use strict";
+  var mainSections = ["home", "resume", "pic", "contact"];
+  var sectionIds = ["home", "resume", "obj", "edu", "exp", "skl", "prj", "pic", "contact"];
+  var aliases = {
+    home:"home",
+    res:"resume", resume:"resume", cv:"resume",
+    obj:"obj", objective:"obj", about:"obj",
+    edu:"edu", education:"edu",
+    exp:"exp", experience:"exp",
+    skl:"skl", skills:"skl",
+    prj:"prj", proj:"prj", projects:"prj", portfolio:"prj",
+    con:"contact", contact:"contact",
+    pic:"pic", gallery:"pic", photo:"pic", photos:"pic", blog:"pic",
+    top:"__top"
+  };
+  var cmd  = document.getElementById("cmd");
+  var help = document.getElementById("help");
+  var curr = document.getElementById("curr");
+
+  function goTo(id){
+    if(id === "__top"){ window.scrollTo({top:0}); return; }
+    var el = document.getElementById(id);
+    if(!el) return;
+
+    // Determine the parent main section to display
+    var mainId = id;
+    if (["obj", "edu", "exp", "skl", "prj"].includes(id)) {
+      mainId = "resume";
+    }
+
+    // Toggle active main section display
+    mainSections.forEach(function(s) {
+      var sEl = document.getElementById(s);
+      if(sEl) sEl.classList.toggle("active", s === mainId);
+    });
+
+    // Toggle sub-links visibility in sidebar if Resume is active
+    document.querySelector(".index").classList.toggle("active-resume", mainId === "resume");
+
+    // Scroll handling: reset to top if selecting a main section, or scroll to the specific element if subsection
+    if (mainId === id) {
+      window.scrollTo({top:0});
+    } else {
+      el.scrollIntoView({block:"start"});
+    }
+    
+    // reset flash animation
+    el.classList.remove("flash");
+    void el.offsetWidth;            
+    el.classList.add("flash");
+    
+    // Update active state in UI
+    setCurrent(id);
+  }
+
+  function runCommand(raw){
+    var v = (raw||"").trim().toLowerCase();
+    v = v.replace(/\s*go\s*$/,"").replace(/[<>]/g,"").trim(); // strip <GO>
+    if(!v) return;
+    if(v === "help" || v === "?"){ toggleHelp(true); return; }
+    
+    // support numeric shortcuts for main sections
+    if(v==="1") { goTo("home"); return; }
+    if(v==="2") { goTo("resume"); return; }
+    if(v==="3") { goTo("pic"); return; }
+    if(v==="4") { goTo("contact"); return; }
+    
+    if(aliases[v]){ goTo(aliases[v]); return; }
+    
+    // unknown command: brief red flash on the input
+    cmd.style.color = "var(--red)";
+    setTimeout(function(){ cmd.style.color = "var(--amber)"; }, 350);
+  }
+
+  // ----- scroll-spy: highlight current section -----
+  var links = Array.prototype.slice.call(document.querySelectorAll(".index a"));
+  function setCurrent(id){
+    var mainId = id;
+    if (["obj", "edu", "exp", "skl", "prj"].includes(id)) { mainId = "resume"; }
+    
+    // Make sure sub-links follow observer state
+    document.querySelector(".index").classList.toggle("active-resume", mainId === "resume");
+
+    // Determine the readable code to show in footer
+    var linkMatch = document.querySelector(".index a[href='#" + id + "']");
+    if(linkMatch) {
+      curr.textContent = linkMatch.getAttribute("data-mn");
+    } else {
+      curr.textContent = id.toUpperCase();
+    }
+    
+    links.forEach(function(a){
+      a.classList.toggle("on", a.getAttribute("href") === "#"+id);
+    });
+  }
+  
+  if("IntersectionObserver" in window){
+    // Track both main sections and sub-sections to update sidebar dynamically while scrolling within a visible tab
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        // Since inactive sections are display:none, they won't trigger intersection
+        if(e.isIntersecting) setCurrent(e.target.id);
+      });
+    }, {rootMargin:"-45% 0px -50% 0px", threshold:0});
+    
+    sectionIds.forEach(function(id){ var el=document.getElementById(id); if(el) io.observe(el); });
+  }
+
+  // ----- command line submit -----
+  cmd.addEventListener("keydown", function(e){
+    if(e.key === "Enter"){ e.preventDefault(); runCommand(cmd.value); cmd.value=""; cmd.blur(); }
+    else if(e.key === "Escape"){ cmd.value=""; cmd.blur(); }
+  });
+
+  // ----- function key bar + index clicks -----
+  document.querySelectorAll(".fk").forEach(function(b){
+    b.addEventListener("click", function(){
+      if(b.dataset.help){ toggleHelp(true); } else { goTo(b.dataset.go); }
+    });
+  });
+  document.querySelectorAll(".nav-card").forEach(function(b){
+    b.addEventListener("click", function(){ goTo(b.dataset.goSection); });
+  });
+
+  // ----- gallery + lightbox -----
+  var photos = [
+    { src:"gallery/tudlib.jpg",    date:"17/07/2025", location:"Delft, NL", camera:"Agfaphoto Disposable Camera", film:"Kodak Colorplus 200", notes:"This is the TU Delft Library. I absolutely adore the colors of this film, especially on a hot summer day like it was when I took this photo" },
+    { src:"gallery/oostpoort.jpg", date:"14/09/2025", location:"Delft, NL", camera:"Yashica EZS Zoom 70", film:"Kodak Gold 200", notes:"This photo of Delft was taken from the Oostpoortbrug, which is only open to the public once a year during the country's Open Monument Days" },
+    { src:"gallery/newams.jpg",    date:"02/05/2026", location:"Nieuwe Amsterdam, NL", camera:"Pentax Espio 115M", film:"Kodak Colorplus 200", notes:"I'm in this image, but I love how my friend was able to capture the Arriva train crossing in the background" },
+    { src:"gallery/utrecht.jpg",   date:"11/04/2026", location:"Utrecht, NL", camera:"Pentax Espio 115M", film:"Kodak Gold 200", notes:"The UFO on the top of the ProRail headquarters at Utrecht will forever be an iconic artwork" },
+    { src:"gallery/leuven.jpg",    date:"16/08/2025", location:"Leuven, BE", camera:"Yashica EZS Zoom 70", film:"Kodak Ultramax 400", notes:"Taken at Sint-Donatus Park at Leuven, Belgium. I don't have much to say about this photo, but it was just cool to see" },
+    { src:"gallery/szr.jpg",       date:"21/12/2025", location:"Dubai, AE", camera:"Pentax Espio 115M", film:"Kodak Gold 200", notes:"I love this raw, unprocessed photo of the Sheikh Zayed Road in Dubai, a stark contrast to the HDR-heavy images we usually see from the city" },
+    { src:"gallery/firetruck.jpg", date:"13/12/2025", location:"Delft, NL", camera:"Pentax Espio 115M", film:"Kodak Ultramax 400", notes:"The Pentax was new to me at that moment, and it did a wonderful job capturing the colors of this bright-red firetruck" }
+  ];
+  var lbOpen = false;
+  var lbIndex = 0;
+  var lb = document.getElementById("lightbox");
+  var lbImg = document.getElementById("lb-img");
+  var lbBarCount = document.getElementById("lb-bar-count");
+  var galGrid = document.getElementById("gal-grid");
+
+  // Build grid items
+  photos.forEach(function(p, i){
+    var item = document.createElement("div");
+    item.className = "gal-item";
+    item.tabIndex = 0;
+    item.setAttribute("role", "gridcell");
+    item.setAttribute("aria-label", "Photo " + (i+1) + " of " + photos.length);
+    item.dataset.idx = String(i);
+
+    var img = document.createElement("img");
+    img.src = p.src;
+    img.alt = "";
+    img.loading = "lazy";
+
+    var num = document.createElement("span");
+    num.className = "gal-num";
+    num.textContent = String(i+1).padStart(2,"0") + "/" + String(photos.length).padStart(2,"0");
+
+    item.appendChild(img);
+    item.appendChild(num);
+
+    item.addEventListener("click", function(){ openLightbox(i); });
+    item.addEventListener("keydown", function(e){
+      var items = Array.prototype.slice.call(galGrid.querySelectorAll(".gal-item"));
+      if(e.key === "Enter" || e.key === " "){ e.preventDefault(); openLightbox(i); return; }
+      if(e.key === "ArrowRight"){ e.preventDefault(); if(items[i+1]) items[i+1].focus(); return; }
+      if(e.key === "ArrowLeft") { e.preventDefault(); if(items[i-1]) items[i-1].focus(); return; }
+      if(e.key === "ArrowDown"){
+        e.preventDefault();
+        var cols = window.innerWidth < 480 ? 1 : window.innerWidth < 760 ? 2 : 3;
+        if(items[i+cols]) items[i+cols].focus();
+        return;
+      }
+      if(e.key === "ArrowUp"){
+        e.preventDefault();
+        var cols = window.innerWidth < 480 ? 1 : window.innerWidth < 760 ? 2 : 3;
+        if(items[i-cols]) items[i-cols].focus();
+        return;
+      }
+    });
+
+    galGrid.appendChild(item);
+  });
+
+  function openLightbox(idx){
+    lbIndex = idx;
+    lbOpen = true;
+    lb.classList.add("open");
+    updateLightbox();
+    document.getElementById("lb-close-btn").focus();
+  }
+  function closeLightbox(){
+    lbOpen = false;
+    lb.classList.remove("open");
+    var items = galGrid.querySelectorAll(".gal-item");
+    if(items[lbIndex]) items[lbIndex].focus();
+  }
+  function updateLightbox(){
+    var p = photos[lbIndex];
+    lbImg.src = p.src;
+    lbImg.alt = "Photo " + (lbIndex+1);
+    lbBarCount.textContent = String(lbIndex+1).padStart(2,"0") + " / " + String(photos.length).padStart(2,"0");
+    document.getElementById("lb-prev").disabled = (lbIndex === 0);
+    document.getElementById("lb-next").disabled = (lbIndex === photos.length-1);
+    function setVal(id, val){
+      var el = document.getElementById(id);
+      if(!el) return;
+      if(val){ el.textContent = val; el.classList.remove("empty"); }
+      else   { el.textContent = "—"; el.classList.add("empty");    }
+    }
+    setVal("lb-date",     p.date);
+    setVal("lb-location", p.location);
+    setVal("lb-camera",   p.camera);
+    setVal("lb-film",     p.film);
+    setVal("lb-notes",    p.notes);
+  }
+
+  document.getElementById("lb-prev").addEventListener("click", function(){ if(lbIndex>0){ lbIndex--; updateLightbox(); } });
+  document.getElementById("lb-next").addEventListener("click", function(){ if(lbIndex<photos.length-1){ lbIndex++; updateLightbox(); } });
+  document.getElementById("lb-close-btn").addEventListener("click", closeLightbox);
+  lb.addEventListener("click", function(e){ if(e.target===lb) closeLightbox(); });
+
+  links.forEach(function(a){
+    a.addEventListener("click", function(ev){ ev.preventDefault(); goTo(a.getAttribute("href").slice(1)); });
+  });
+
+  // ----- help overlay -----
+  function toggleHelp(state){
+    var open = (typeof state === "boolean") ? state : !help.classList.contains("open");
+    help.classList.toggle("open", open);
+  }
+  help.addEventListener("click", function(e){ if(e.target === help) toggleHelp(false); });
+
+  // ----- global keyboard navigation -----
+  document.addEventListener("keydown", function(e){
+    var typing = document.activeElement === cmd;
+    
+    // command line focus shortcut works everywhere
+    if(!typing){
+      if(help.classList.contains("open")){
+        if(e.key === "Escape" || e.key === "?"){ toggleHelp(false); }
+        return;
+      }
+      if(lbOpen){
+        if(e.key === "Escape"){ closeLightbox(); return; }
+        if(e.key === "ArrowLeft"){ e.preventDefault(); if(lbIndex>0){ lbIndex--; updateLightbox(); } return; }
+        if(e.key === "ArrowRight"){ e.preventDefault(); if(lbIndex<photos.length-1){ lbIndex++; updateLightbox(); } return; }
+        return;
+      }
+      if(e.key === "/" ){ e.preventDefault(); cmd.focus(); return; }
+      if(e.key === "?" ){ e.preventDefault(); toggleHelp(true); return; }
+      if(e.key === "F1"){ e.preventDefault(); toggleHelp(true); return; }
+      if(/^[1-4]$/.test(e.key)){ 
+        e.preventDefault(); 
+        goTo(mainSections[parseInt(e.key,10)-1]); 
+        return; 
+      }
+      if(e.key === "j"){ e.preventDefault(); window.scrollBy({top:120}); return; }
+      if(e.key === "k"){ e.preventDefault(); window.scrollBy({top:-120}); return; }
+      if(e.key === "g"){ e.preventDefault(); window.scrollTo({top:0}); return; }
+      if(e.key === "G"){ e.preventDefault(); window.scrollTo({top:document.body.scrollHeight}); return; }
+      
+      // Navigate to next / previous main section tab
+      if(e.key === "n"){ 
+        e.preventDefault(); 
+        var activeMain = document.querySelector("main > section.active").id;
+        var idx = mainSections.indexOf(activeMain);
+        goTo(mainSections[Math.min(idx+1, mainSections.length-1)]); 
+        return; 
+      }
+      if(e.key === "p"){ 
+        e.preventDefault(); 
+        var activeMain = document.querySelector("main > section.active").id;
+        var idx = mainSections.indexOf(activeMain);
+        goTo(mainSections[Math.max(idx-1, 0)]); 
+        return; 
+      }
+      if(e.key === ":" ){ e.preventDefault(); cmd.focus(); return; }
+    } else {
+      if(e.key === "Escape"){ cmd.blur(); }
+    }
+  });
+
+  // ----- dual clocks -----
+  function tick(){
+    var d = new Date();
+    function p(n){ return (n<10?"0":"")+n; }
+
+    // Viewer's Local Time
+    document.getElementById("clock-local").textContent =
+      p(d.getHours()) + ":" + p(d.getMinutes()) + ":" + p(d.getSeconds());
+
+    // Rubhav's Time (NL - CET/CEST)
+    var nlFormatter = new Intl.DateTimeFormat('en-GB', {
+      timeZone: 'Europe/Amsterdam',
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+      hour12: false
+    });
+    
+    var formattedNLTime = nlFormatter.format(d).split(' ')[0]; 
+    document.getElementById("clock-cest").textContent = formattedNLTime;
+  }
+  
+  tick(); 
+  setInterval(tick, 1000);
+
+  // Initialize view
+  goTo("home");
+
+  // Expose to global scope for inline onclick handlers
+  window.goTo = goTo;
+})();
+</script>
+</body>
+</html>
