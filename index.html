@@ -227,6 +227,30 @@
   @keyframes flashbar{0%{background:var(--green);color:#000;}100%{background:transparent;color:var(--cyan);}}
   section.flash .sechead{animation:flashbar .9s ease-out; color:#000; background:var(--amber);}
 
+  /* ============ MUSIC SECTION ============ */
+  .album-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:20px;margin-top:4px;}
+  .album-card{display:flex;flex-direction:column;gap:8px;}
+  .album-rank{color:var(--amber);font-weight:700;font-size:11px;letter-spacing:1px;}
+  .album-art{width:100%;aspect-ratio:1;background:var(--select);border:1px solid var(--dimmer);
+    display:flex;align-items:center;justify-content:center;overflow:hidden;}
+  .album-art img{width:100%;height:100%;object-fit:cover;display:block;}
+  .album-art-placeholder{color:var(--dimmer);font-size:11px;letter-spacing:1px;text-align:center;padding:8px;}
+  .album-info{display:flex;flex-direction:column;gap:2px;}
+  .album-title{color:var(--white);font-weight:700;font-size:13px;line-height:1.3;}
+  .album-artist{color:var(--cyan);font-size:12px;}
+  .album-year{color:var(--dim);font-size:11px;}
+  @media(max-width:760px){.album-grid{grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:14px;}}
+
+  /* ============ BOOK SECTION ============ */
+  .book-entry{border-left:2px solid var(--dimmer);padding:8px 0 8px 14px;margin:10px 0;}
+  .book-entry:hover{border-left-color:var(--amber);}
+  .book-hdr{display:flex;flex-direction:column;gap:3px;}
+  .book-title{font-size:14px;}
+  .book-sub{color:var(--dim);font-size:13px;}
+  .book-author{color:var(--cyan);font-size:12px;letter-spacing:.5px;}
+  .book-comment{color:var(--dim);font-size:13px;margin-top:6px;font-style:italic;}
+  .book-comment:not(:empty)::before{content:"// ";color:var(--dimmer);}
+
   /* ============ MOBILE NAV OVERLAY ============ */
   button.prompt{background:none;border:none;cursor:pointer;color:var(--amber);
     font-family:var(--mono);font-size:inherit;padding:0;line-height:1;}
@@ -684,6 +708,211 @@
       </div>
     </section>
 
+    <!-- SECRET SECTION: MUSIC -->
+    <section id="music">
+      <h2 class="sechead"><span class="ti">MUSIC</span><span class="spacer"></span><span class="no">// MUSIC</span></h2>
+      <div class="body">
+
+        <p class="lede">Music has been a big part of my life since I was a kid, and over the years my music taste has evolved to encompass almost every genre. You can find what I'm currently listening to as well as some curated playlists that encompass my music interests on my <a href="https://open.spotify.com/user/rn_geekerd" target="_blank" rel="noopener">Spotify profile</a>. However, as a reward for finding this page, I leave you a highly-opinionated list of my Top 10 favourite albums of all-time.</p>
+
+        <div class="subhead">[ RUBHAV'S TOP 10 ALBUMS OF ALL TIME ]</div>
+
+        <div class="album-grid">
+
+          <div class="album-card">
+            <div class="album-rank">01</div>
+            <div class="album-art">
+              <img src="https://t2.genius.com/unsafe/1255x0/https%3A%2F%2Fimages.genius.com%2F0b029d588d9b4b487bd0e33f569d481f.1000x1000x1.png" alt="Random Access Memories" loading="lazy" onerror="this.parentElement.innerHTML='<div class=\'album-art-placeholder\'>NO ART</div>'">
+            </div>
+            <div class="album-info">
+              <div class="album-title">Random Access Memories</div>
+              <div class="album-artist">Daft Punk</div>
+              <div class="album-year">2013</div>
+            </div>
+          </div>
+
+          <div class="album-card">
+            <div class="album-rank">02</div>
+            <div class="album-art">
+              <img src="https://t2.genius.com/unsafe/1210x0/https%3A%2F%2Fimages.genius.com%2F5e32ad6b2a280499ee2657260c903e5d.1000x1000x1.png" alt="Discovery" loading="lazy" onerror="this.parentElement.innerHTML='<div class=\'album-art-placeholder\'>NO ART</div>'">
+            </div>
+            <div class="album-info">
+              <div class="album-title">Discovery</div>
+              <div class="album-artist">Daft Punk</div>
+              <div class="album-year">2001</div>
+            </div>
+          </div>
+
+          <div class="album-card">
+            <div class="album-rank">03</div>
+            <div class="album-art">
+              <img src="https://t2.genius.com/unsafe/1210x0/https%3A%2F%2Fimages.genius.com%2Fb9d6cf24ceb76fa5d8ebf02569e16e2f.1000x1000x1.png" alt="Graduation" loading="lazy" onerror="this.parentElement.innerHTML='<div class=\'album-art-placeholder\'>NO ART</div>'">
+            </div>
+            <div class="album-info">
+              <div class="album-title">Graduation</div>
+              <div class="album-artist">Kanye West</div>
+              <div class="album-year">2007</div>
+            </div>
+          </div>
+
+          <div class="album-card">
+            <div class="album-rank">04</div>
+            <div class="album-art">
+              <img src="https://t2.genius.com/unsafe/1210x0/https%3A%2F%2Fimages.genius.com%2F3941ab75dfd30064f6fac2797e618437.1000x1000x1.png" alt="Racine Carrée" loading="lazy" onerror="this.parentElement.innerHTML='<div class=\'album-art-placeholder\'>NO ART</div>'">
+            </div>
+            <div class="album-info">
+              <div class="album-title">Racine Carrée</div>
+              <div class="album-artist">Stromae</div>
+              <div class="album-year">2013</div>
+            </div>
+          </div>
+
+          <div class="album-card">
+            <div class="album-rank">05</div>
+            <div class="album-art">
+              <img src="https://t2.genius.com/unsafe/1210x0/https%3A%2F%2Fimages.genius.com%2F221e2dfb220e518a0019b19ed21d6c90.1000x1000x1.jpg" alt="Black Mirror Society (Deluxe Edition)" loading="lazy" onerror="this.parentElement.innerHTML='<div class=\'album-art-placeholder\'>NO ART</div>'">
+            </div>
+            <div class="album-info">
+              <div class="album-title">Black Mirror Society (Deluxe Edition)</div>
+              <div class="album-artist">Phuture Noize</div>
+              <div class="album-year">2019</div>
+            </div>
+          </div>
+
+          <div class="album-card">
+            <div class="album-rank">06</div>
+            <div class="album-art">
+              <img src="https://t2.genius.com/unsafe/1210x0/https%3A%2F%2Fimages.genius.com%2F97300f5421ff3c645217d0d1dfef2dd6.1000x1000x1.jpg" alt="My Beautiful Dark Twisted Fantasy" loading="lazy" onerror="this.parentElement.innerHTML='<div class=\'album-art-placeholder\'>NO ART</div>'">
+            </div>
+            <div class="album-info">
+              <div class="album-title">My Beautiful Dark Twisted Fantasy</div>
+              <div class="album-artist">Kanye West</div>
+              <div class="album-year">2010</div>
+            </div>
+          </div>
+
+          <div class="album-card">
+            <div class="album-rank">07</div>
+            <div class="album-art">
+              <img src="https://t2.genius.com/unsafe/1210x0/https%3A%2F%2Fimages.genius.com%2F0a74a169ce8098699e9d77f339ef4c7e.1000x1000x1.png" alt="True" loading="lazy" onerror="this.parentElement.innerHTML='<div class=\'album-art-placeholder\'>NO ART</div>'">
+            </div>
+            <div class="album-info">
+              <div class="album-title">True</div>
+              <div class="album-artist">Avicii</div>
+              <div class="album-year">2013</div>
+            </div>
+          </div>
+
+          <div class="album-card">
+            <div class="album-rank">08</div>
+            <div class="album-art">
+              <img src="https://t2.genius.com/unsafe/1210x0/https%3A%2F%2Fimages.genius.com%2F1cf8aebac08a373b8a76e577fad286c3.1000x1000x1.png" alt="Deux Frères" loading="lazy" onerror="this.parentElement.innerHTML='<div class=\'album-art-placeholder\'>NO ART</div>'">
+            </div>
+            <div class="album-info">
+              <div class="album-title">Deux Frères</div>
+              <div class="album-artist">PNL</div>
+              <div class="album-year">2019</div>
+            </div>
+          </div>
+
+          <div class="album-card">
+            <div class="album-rank">09</div>
+            <div class="album-art">
+              <img src="https://t2.genius.com/unsafe/1210x0/https%3A%2F%2Fimages.genius.com%2F8a08e2b8184157626f36119448df7c94.720x720x1.jpg" alt="United We Are" loading="lazy" onerror="this.parentElement.innerHTML='<div class=\'album-art-placeholder\'>NO ART</div>'">
+            </div>
+            <div class="album-info">
+              <div class="album-title">United We Are</div>
+              <div class="album-artist">Hardwell</div>
+              <div class="album-year">2015</div>
+            </div>
+          </div>
+
+          <div class="album-card">
+            <div class="album-rank">10</div>
+            <div class="album-art">
+              <img src="https://t2.genius.com/unsafe/1210x0/https%3A%2F%2Fimages.genius.com%2F777ce95cc69a4d8ef326e421e991932a.1000x1000x1.png" alt="The Life of Pablo" loading="lazy" onerror="this.parentElement.innerHTML='<div class=\'album-art-placeholder\'>NO ART</div>'">
+            </div>
+            <div class="album-info">
+              <div class="album-title">The Life of Pablo</div>
+              <div class="album-artist">Kanye West</div>
+              <div class="album-year">2016</div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- SECRET SECTION: BOOK -->
+    <section id="book">
+      <h2 class="sechead"><span class="ti">READING</span><span class="spacer"></span><span class="no">// BOOK</span></h2>
+      <div class="body">
+
+        <div class="subhead">[ CURRENTLY READING ]</div>
+
+        <div class="book-entry">
+          <div class="book-hdr">
+            <div class="book-title"><span class="hl">This Way Up</span><span class="book-sub"> — When Maps Go Wrong (And Why It Matters)</span></div>
+            <div class="book-author">Jay Foreman &amp; Mark Cooper-Jones</div>
+          </div>
+          <div class="book-comment"><!-- your comment here --></div>
+        </div>
+
+        <div class="subhead">[ IN PROGRESS ]</div>
+
+        <div class="book-entry">
+          <div class="book-hdr">
+            <div class="book-title"><span class="hl">Algospeak</span><span class="book-sub"> — How Social Media Is Transforming the Future of Language</span></div>
+            <div class="book-author">Adam Aleksic</div>
+          </div>
+          <div class="book-comment"><!-- your comment here --></div>
+        </div>
+
+        <div class="book-entry">
+          <div class="book-hdr">
+            <div class="book-title"><span class="hl">The Martian</span></div>
+            <div class="book-author">Andy Weir</div>
+          </div>
+          <div class="book-comment"><!-- your comment here --></div>
+        </div>
+
+        <div class="book-entry">
+          <div class="book-hdr">
+            <div class="book-title"><span class="hl">Star Wars: The Rise and Fall of the Galactic Empire</span></div>
+            <div class="book-author">Chris Kempshall</div>
+          </div>
+          <div class="book-comment"><!-- your comment here --></div>
+        </div>
+
+        <div class="subhead">[ RECOMMENDED READS ]</div>
+
+        <div class="book-entry">
+          <div class="book-hdr">
+            <div class="book-title"><span class="hl">Mr Wilman's Motoring Adventure</span><span class="book-sub"> — Top Gear, Grand Tour and Twenty Years of Magic and Mayhem</span></div>
+            <div class="book-author">Andy Wilman</div>
+          </div>
+          <div class="book-comment"><!-- your comment here --></div>
+        </div>
+
+        <div class="book-entry">
+          <div class="book-hdr">
+            <div class="book-title"><span class="hl">Star Wars: Revenge of the Sith</span><span class="book-sub"> — Episode III</span></div>
+            <div class="book-author">Matthew Stover</div>
+          </div>
+          <div class="book-comment"><!-- your comment here --></div>
+        </div>
+
+        <div class="book-entry">
+          <div class="book-hdr">
+            <div class="book-title"><span class="hl">How to Build a Car</span><span class="book-sub"> — The Autobiography of the World's Greatest Formula 1 Designer</span></div>
+            <div class="book-author">Adrian Newey</div>
+          </div>
+          <div class="book-comment"><!-- your comment here --></div>
+        </div>
+
+      </div>
+    </section>
+
     <!-- SECTION 4: CONTACT -->
     <section id="contact">
       <h2 class="sechead"><span class="ti">CONTACT</span><span class="spacer"></span><span class="no">04 / 04</span></h2>
@@ -752,8 +981,8 @@
 <script>
 (function(){
   "use strict";
-  var mainSections = ["home", "resume", "pic", "contact"];
-  var sectionIds = ["home", "resume", "obj", "edu", "exp", "skl", "prj", "pic", "contact"];
+  var mainSections = ["home", "resume", "pic", "contact", "book", "music"];
+  var sectionIds = ["home", "resume", "obj", "edu", "exp", "skl", "prj", "pic", "contact", "book", "music"];
   var aliases = {
     home:"home",
     res:"resume", resume:"resume", cv:"resume",
@@ -764,6 +993,8 @@
     prj:"prj", proj:"prj", projects:"prj", portfolio:"prj",
     con:"contact", contact:"contact",
     pic:"pic", gallery:"pic", photo:"pic", photos:"pic", blog:"pic",
+    book:"book", reading:"book", read:"book",
+    music:"music", listening:"music",
     top:"__top"
   };
   var cmd  = document.getElementById("cmd");
